@@ -1,0 +1,66 @@
+.parallax {
+  margin-top: -150px;
+  width: 100vw;
+  height: 120vh;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sliderContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.textContent {
+  color: white;
+  font-size: 25px;
+  text-align: center;
+  padding: 15px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  max-width: 80%;
+  margin-top: 28%;
+}
+
+
+@media (max-width: 600px) {
+  .parallax {
+    height: 100vh; 
+  }
+
+  .textContent {
+    font-size: 18px;
+    padding: 10px;
+    max-width: 90%;
+    margin-top: 35%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .parallax {
+    height: 110vh; 
+  }
+
+  .textContent {
+    font-size: 22px; 
+    padding: 12px;
+    max-width: 85%;
+    margin-top: 30%;
+  }
+}
+
+@media (min-width: 1025px) {
+  .parallax {
+    height: 120vh; 
+  }
+
+  .textContent {
+    font-size: 25px;
+    padding: 15px;
+    max-width: 80%;
+    margin-top: 28%;
+  }
+}

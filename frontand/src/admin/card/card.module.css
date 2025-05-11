@@ -1,0 +1,93 @@
+.cardContainer {
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  position: relative;
+  text-decoration: none;
+  width: 280px;
+  height: 130px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+.cardInfoContainer {
+  background-color: #11516e; /* Softer blue */
+}
+
+.cardSuccessContainer {
+  background-color: #1f5f22; /* Softer green */
+}
+
+.cardWarningContainer {
+  background-color: #81663e; /* Softer orange */
+}
+
+.cardDangerContainer {
+  background-color: #e57373; /* Softer red */
+}
+
+.cardPrimaryContainer {
+  background-color: #35668e; /* Softer primary blue */
+}
+
+
+.cardContainer:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  cursor: pointer; 
+}
+
+.moreInfoText {
+  display: inline-block;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.moreInfoText:hover {
+  text-decoration: underline;
+}
+
+.cardContainer h2 {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.cardContainer p {
+  color: white;
+  font-size: 14px;
+}
+
+.cardsWrapper {
+  background-color: #f7f9fc;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  padding: 25px;
+}
+
+.statsCardsWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .statsCardsWrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .statsCardsWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+.cardContainer {
+  color: #fff; /* Simplified color */
+}
+
