@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -25,79 +24,82 @@ function Login() {
     };
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        const { email, password } = loginInfo;
-    
-        if (!email || !password) {
-            return handleError('Email and password are required');
+  e.preventDefault();
+  const { email, password } = loginInfo;
+
+  if (!email || !password) {
+    return handleError('Email and password are required');
+  }
+
+  try {
+    const url = process.env.REACT_APP_API_URL || 'http://localhost:8080/auth/login'; 
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(loginInfo)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      handleSuccess(result.message);
+
+      // Extract user object from result
+      const { user } = result;
+
+      const userData = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        success: result.success,
+      };
+
+      localStorage.setItem('token', result.jwtToken);
+      localStorage.setItem('role', user.role);
+      localStorage.setItem('loggedInUser', JSON.stringify(userData));
+
+      setTimeout(() => {
+        const role = user.role?.toLowerCase().trim();
+        if (role === "admin") {
+          navigate('/adminDashboard');
+        } else if (role === "student") {
+          navigate('/userdashboard');
+        } else if (role === "teacher") {
+          navigate('/teacherDashboard');
+        } else {
+          handleError("Unknown role received.");
         }
-    
-        try {
-            const url = process.env.REACT_APP_API_URL || 'http://localhost:8080/auth/login'; 
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginInfo)
-            });
-    
-            const result = await response.json();
-    
-            if (result.success) {
-                handleSuccess(result.message);
-                const userData = {
-                    _id: result._id,
-                    name: result.name,
-                    email: result.email,
-                    role: result.role,
-                    success: result.success
-                };
-    
-                localStorage.setItem('token', result.jwtToken);
-                localStorage.setItem('role', result.role); 
-                localStorage.setItem('loggedInUser', JSON.stringify(userData));
-                console.log("User data stored in localStorage:", userData);
-    
-                // Redirect based on role
-                setTimeout(() => {
-                    if (result.role === "admin") {
-                        navigate('/adminDashboard');
-                    } else if (result.role === "student") {
-                        navigate('/userdashboard');
-                    } else if (result.role === "teacher") {
-                        navigate('/teacherDashboard');
-                    } else {
-                        handleError("Unknown role received.");
-                    }
-                }, 1000);
-    
-            } else {
-                handleError(result.error || result.message);
-            }
-        } catch (err) {
-            handleError("Network error. Please try again.");
-        }
-    };
-    
+      }, 1000);
+
+    } else {
+      handleError(result.error || result.message);
+    }
+  } catch (err) {
+    handleError("Network error. Please try again.");
+  }
+};
+
 
     return (
         <>
             <Taskbar />
             <div className={styles.page}> 
                 <NoticeBoard />
-                <div className={styles.container}>  
+                <div className={styles.container}> 
                     <h1>Login</h1>
                     <form onSubmit={handleLogin}>
                         <div>
                             <label htmlFor="email" className={styles.label}>Email</label>
                             <input
-                            type="email"
-                            name="email"
-                            onChange={handleChange}
-                            placeholder="Enter your email..."
-                            value={loginInfo.email}
-                        />
+                                type="email"
+                                name="email"
+                                onChange={handleChange}
+                                placeholder="Enter your email..."
+                                value={loginInfo.email}
+                            />
                         </div>
                         <div>
                             <label htmlFor="password" className={styles.label}>Password</label>
@@ -108,7 +110,6 @@ function Login() {
                                 placeholder="Enter your password..."
                                 value={loginInfo.password}
                             />
-
                         </div>
                         <button type="submit" className={styles.submitButton}>Login</button>
                         <span className={styles.bottomhead}>Don't have an account? <Link to="/signup">Signup</Link></span>

@@ -45,7 +45,6 @@ const AnnouncementModal = ({ announcement, onClose, onSave }) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className={styles.textarea}
-            
           />
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>

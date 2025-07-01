@@ -8,7 +8,7 @@ const DatasetCard = (props) => {
         <h3 className={styles.cardName}>{props.name}</h3>
         <p className={styles.cardDesc}>{props.desc}</p>
         <a href={props.link} className={styles.btn1} target="_blank" rel="noopener noreferrer">
-            Download
+            Link
         </a>
     </div>
   )

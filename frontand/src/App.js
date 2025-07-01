@@ -26,6 +26,12 @@ import AddTeacher from './admin/addTeacher/AddTeacher';
 import TeacherSlots from './teacher/teacherSlot';
 import SlotRequests from './teacher/slotRequest/slotRequests';
 import AdviserRequests from './pages/adviser/AdviserRequest/AdviserRequests';
+import ProjectIdea from './admin/projectidea/projectIdea';
+import OPenProjectIdea from './pages/projectIdea/openProjectIdea';
+import ResourceFiles from './admin/ResourceFile/ResouceFiles';
+import ResourceFile from './pages/resourceFile/resourceFiles';
+import ViewFypSubmissions from './pages/uploadFyp/ViewFypSubmissions';
+
 function App() {
 
   return (
@@ -41,7 +47,6 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/verifiedotp" element={<VerifiedOtp />} />
 
-
         {/* User Routes */}
         <Route path="/home" element={<ProtectedRoute element={<Home />} allowedRole="student" />} />
         <Route path="/adviserAvailibilty" element={<ProtectedRoute element={<AdviserAvailiblity />} allowedRole="student" />} />
@@ -52,6 +57,9 @@ function App() {
         <Route path="/userdashboard" element={<ProtectedRoute element={<UserDashboard />} allowedRole="student" />} />
         <Route path="/adviser_requests" element={<ProtectedRoute element={<AdviserRequests />} allowedRole="student" />} />
         <Route path="/zabai" element={<ProtectedRoute element={<ZabAI />} allowedRole="student"/>} />
+        <Route path="/open-ideas" element={<ProtectedRoute element={<OPenProjectIdea />} allowedRole="student"/>} />
+        <Route path="/resource-file" element={<ProtectedRoute element={<ResourceFile />} allowedRole="student" />} />
+        <Route path="/uploadFYP" element={<ProtectedRoute element={<ViewFypSubmissions />} allowedRole="student" />} />
 
 
         {/* Admin Routes */}
@@ -61,12 +69,13 @@ function App() {
         <Route path="/adviserslist" element={<ProtectedRoute element={<AdviserSlots />} allowedRole="admin" />} />
         <Route path="/result" element={<ProtectedRoute element={<Result />} allowedRole="admin"/>} />
         <Route path="/addTeacher" element={<ProtectedRoute element={<AddTeacher />} allowedRole="admin"/>} />
+        <Route path="/projectIdea" element={<ProtectedRoute element={<ProjectIdea />} allowedRole="admin"/>} />
 
         {/* Teacher Routes */}
-        <Route path="/teacherDashboard" element={<ProtectedRoute element={<TeacherDashboard allowedRole="teacher" />} />} />
+        <Route path="/teacherDashboard" element={<ProtectedRoute element={<AdminDashboard allowedRole="teacher" />} />} />
         <Route path="/teacherslot" element={<ProtectedRoute element={<TeacherSlots />} allowedRole="teacher" />} />
-        <Route path="/slotRequests" element={<ProtectedRoute element={<SlotRequests />} allowedRole="teacher" />} />
-
+        <Route path="/slotRequests" element={<ProtectedRoute element={<SlotRequests />} allowedRole="teacher" />} />=
+        <Route path="/resourceFile" element={<ProtectedRoute element={<ResourceFiles />} allowedRole="admin" />} />
       </Routes>
     </div>
   );

@@ -1,49 +1,8 @@
-/* Updated styles for advisor cards */
-.advisorCard {
-  width: 100%;
-  background: #f4f4f4;
-  padding: 1.5rem;
-  text-align: center;
-  margin: 10px;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-.advisorCard:hover {
-  background: #003366;
-  color: #fff;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-.advisorDetails h2,.advisorDetails p{
-  font-size: 1rem;
-  margin-top: 20px;
-}
-
-.advisorCard:hover .advisorDetails h2,
-.advisorCard:hover .advisorDetails p {
-  color: #fff;
-}
-
-.advisorImage {
-  width: 100%;
-  height: 200px; 
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
-}
-
-.advisorImage:hover {
-  transform: scale(1.1); 
-}
-
+/* Title and Description Section */
 .myTitle {
-  margin-top: 100px;
+  margin-top: 50px;
   font-size: 2.5rem;
-  margin-bottom: 29px;
+  margin-bottom: 35px;
   text-align: center;
   color: #003366;
 }
@@ -56,27 +15,104 @@
   line-height: 1.6;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
+/* Container */
 .servicesContainer {
-  width: 80%;
+  width: 90%;
   max-width: 1280px;
   margin: 0 auto;
   padding: 3rem 0;
-  text-align: center;
   border-radius: 12px;
 }
 
+/* Grid Layout for Cards */
 .servicesCards {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 2rem;
+  gap: 30px;
   margin-top: 3rem;
 }
 
-@media (max-width: 1024px) {
+/* Individual Advisor Card */
+.advisorCard {
+  background: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+.advisorCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Advisor Image */
+.advisorImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.advisorImage:hover {
+  transform: scale(1.05);
+}
+
+/* Advisor Details */
+.advisorDetails h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #003366;
+  margin: 10px 0 15px;
+
+}
+
+.advisorDetails p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+  
+}
+
+.advisorCard button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0c54a3;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.advisorCard button:hover {
+  background-color: #084a8f;
+}
+
+/* Responsive Layouts */
+@media (max-width: 1200px) {
   .servicesCards {
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .servicesCards {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -86,8 +122,8 @@
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 500px) {
   .servicesCards {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
   }
 }

@@ -1,22 +1,65 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './dashboard.module.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./dashboard.module.css";
+import Futtor from "../futtor/futtor";
+import Taskbar from "../taskbar/taskbar";
 
 const departments = [
-  { name: 'Computer Science (CS)', description: 'Innovative technology and programming.', icon: '💻' },
-  { name: 'Software Engineering (SE)', description: 'Building scalable software systems.', icon: '🛠️' },
-  { name: 'Artificial Intelligence (AI)', description: 'Leading the future with AI.', icon: '🤖' },
+  {
+    name: "Computer Science (CS)",
+    description: "Innovative technology and programming.",
+    icon: "💻",
+    departmentId: "bcsbs",
+  },
+  {
+    name: "Software Engineering (SE)",
+    description: "Building scalable software systems.",
+    icon: "🛠️",
+    departmentId: "bsse",
+
+  },
+  {
+    name: "Artificial Intelligence (AI)",
+    description: "Leading the future with AI.",
+    icon: "🤖",
+    departmentId: "bsai",
+
+  },
 ];
 
 const years = {
-  'Computer Science (CS)': ['2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015'],
-  'Software Engineering (SE)': ['2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015'],
-  'Artificial Intelligence (AI)': ['2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015'],
+  "Computer Science (CS)": [
+    "2025",
+    "2024",
+    "2023",
+    "2022",
+    "2021",
+    "2020",
+
+  ],
+  "Software Engineering (SE)": [
+     "2025",
+    "2024",
+    "2023",
+    "2022",
+    "2021",
+    "2020",
+
+  ],
+  "Artificial Intelligence (AI)": [
+    "2025",
+    "2024",
+    "2023",
+    "2022",
+    "2021",
+    "2020",
+
+  ],
 };
 
 function Dashboard() {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const handleDepartmentClick = (dept) => {
@@ -28,7 +71,13 @@ function Dashboard() {
   };
 
   const handleYearClick = (year) => {
-    navigate('/fypList', { state: { year, department: selectedDepartment.name } });
+    let sendYear;
+    const yearInt = parseInt(year, 10);
+    sendYear = (yearInt - 4).toString();
+    
+    navigate("/fypList", {
+      state: { year: sendYear, department: selectedDepartment.departmentId },
+    });
   };
 
   const filteredYears = selectedDepartment
@@ -38,6 +87,8 @@ function Dashboard() {
     : [];
 
   return (
+    <div>
+        <Taskbar />
     <div className={styles.dashboardContainer}>
       {!selectedDepartment ? (
         <>
@@ -79,17 +130,20 @@ function Dashboard() {
               ))
             ) : (
               <div className={styles.noResults}>
-                          <img
-                            src="/images/no-search-found.png"
-                            className={styles.noResultsImage}
-                            alt='No Result Found'
-                          />
-                        </div>
+                <img
+                  src="/images/no-search-found.png"
+                  className={styles.noResultsImage}
+                  alt="No Result Found"
+                />
+              </div>
             )}
           </div>
         </>
       )}
     </div>
+    <Futtor />
+    </div>
+
   );
 }
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const NoticeBoardSchema=new Schema({
+const NoticeBoardSchema = new Schema({
     title:{
         type:String,
         required:true
@@ -17,5 +17,5 @@ const NoticeBoardSchema=new Schema({
     
 
 })
-const NoticeBoardModel= mongoose.model("NoticeBoard",NoticeBoardSchema);
+const NoticeBoardModel= mongoose.model("NoticeBoard", NoticeBoardSchema);
 module.exports=NoticeBoardModel;

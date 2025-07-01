@@ -9,7 +9,7 @@ const ResultSchema = new Schema({
   registrationNumbers: {
     type: [String],
     required: true,
-    validate: [arr => arr.length === 2, 'Must provide exactly two registration numbers']
+    validate: [arr => arr.length === 2, 'Must provide exactly two registration numbers'],
   },
   projectTitle: {
     type: String,
@@ -26,6 +26,11 @@ const ResultSchema = new Schema({
   status: {
     type: String,
     required: true,
+  },
+  fypType: {
+    type: String,
+    required: true,
+    enum: ['FYP I', 'FYP II'], 
   },
 });
 

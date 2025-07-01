@@ -4,9 +4,6 @@ export const handleSuccess = (msg) => {
     toast.success(msg, {
         position: "top-right",       
         draggable: true,
-        
-
-        
     });
 }
 

@@ -118,15 +118,19 @@ const login = async (req, res) => {
             { expiresIn: "5h" } 
         );
 
-        res.status(200).json({
-            message: user.role+ " Login successful",
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role, 
-            jwtToken: jwtToken,
+            res.status(200).json({
+            message: "Login successful",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+            },
+            jwtToken,
             success: true
-        });
+            });
+
+        console.log("Login successful for user:", user._id);
     } catch (error) {
         res.status(500).json({ message: "Server error", success: false });
     }

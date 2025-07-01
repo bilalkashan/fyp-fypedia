@@ -11,6 +11,24 @@
   flex-direction: column;
   padding: 20px;
   z-index: 1000;
+  overflow-y: auto; /* vertical scroll */
+  overflow-x: hidden;
+  scrollbar-width: thin; 
+  scrollbar-color: #888 #003366;
+}
+
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #003366;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
 }
 
 .sidebar.open {
@@ -20,26 +38,27 @@
 
 @media (max-width: 767px) {
   .sidebar.open {
-    width: 100vw; /* Full width for mobile */
+    width: 100%;
     background-color: #003366;
     padding-top: 60px;
   }
   .menuItem {
     width: 80%; 
-    
   }
 }
 
 .sidebarHeader {
   font-size: 24px;
-  margin-bottom: 20px;
-  margin-top: 40px;
+  margin-bottom: 22px;
+  margin-top: 26px;
+  font-weight: bolder;
 }
 
 .userInfo {
   margin-bottom: 20px;
   border-bottom: 1px solid white;
   padding-bottom: 10px;
+  font-size: 27px;
 }
 
 .menuItem {
@@ -51,7 +70,7 @@
   color: #003366;
   border-radius: 5px;
   text-align: center;
-  transition:  0.3s ease;
+  transition: 0.3s ease;
 }
 
 .menuItem:hover {
@@ -123,14 +142,13 @@
   .overlay {
     display: none;
   }
+
   .sidebar.open {
-    width: 100vw; /* full screen on mobile when open */
+    width: 100vw;
     background-color: #003366;
-    padding-top: 60px; /* push menu a bit lower if you want */
+    padding-top: 60px;
   }
 }
-
-
 
 .logoutContainer {
   position: absolute;

@@ -96,7 +96,7 @@ const TeacherSlots = () => {
   return (
     <div className={styles.container}>
       <Sidebar />
-      <h1 className={styles.header}>My Adviser Slots</h1>
+      <h1 className={styles.header}>My Slots</h1>
       <div className={styles["table-wrapper"]}>
         <table className={styles.table}>
           <thead>

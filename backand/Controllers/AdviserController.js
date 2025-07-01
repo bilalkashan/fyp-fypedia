@@ -3,7 +3,7 @@ const Teacher = require("../Models/teacherDetail");
 const UserModel = require("../Models/user");
 const StudentDetail = require('../Models/studentDetail'); 
 const adviser = require("../Models/adviser");
-const AdviserRequest = require("../models/adviserRequest");
+const AdviserRequest = require("../Models/AdviserRequest");
 const jwt = require("jsonwebtoken");
 
 

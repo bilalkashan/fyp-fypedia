@@ -5,7 +5,7 @@ const signupValidation = (req, res, next) => {
         name: Joi.string().min(3).max(100).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(4).max(100).required(),
-        role: Joi.string().valid('student', 'teacher','admin').optional() 
+        role: Joi.string().valid('student', 'teacher', 'admin').optional()
     });
 
     const { error } = schema.validate(req.body);
@@ -14,7 +14,6 @@ const signupValidation = (req, res, next) => {
     }
     next();
 };
-
 
 const loginValidation = (req, res, next) => {
     const schema = Joi.object({
@@ -29,7 +28,20 @@ const loginValidation = (req, res, next) => {
     next();
 };
 
-    module.exports = {
-        signupValidation,
-        loginValidation
-    };
+const asyncWrapper = (fn) => {
+    return async(req, res, next) => {
+        try{
+            await fn(req, res, next);
+        }
+        catch(error){
+            next(error);
+        }
+    } 
+};
+
+
+module.exports = {
+    signupValidation,
+    loginValidation,
+    asyncWrapper
+};

@@ -41,36 +41,61 @@ const Sidebar = () => {
         <div className={styles.sidebarHeader}>
           {role.charAt(0).toUpperCase() + role.slice(1)} Panel
         </div>
-        <div className={styles.userInfo}>
-          {name}
-        </div>
+        <div className={styles.userInfo}>{name}</div>
 
         {/* Admin Routes */}
         {role === "admin" && (
           <>
-            <Link to="/adminDashboard" className={styles.menuItem}>Dashboard</Link>
-            <Link to="/request-users" className={styles.menuItem}>Request Users</Link>
-            <Link to="/adviserslist" className={styles.menuItem}>Adviserslist</Link>
-            <Link to="/noticeboard" className={styles.menuItem}>Notice Board</Link>
-            <Link to="/result" className={styles.menuItem}>Result</Link>
+            <Link to="/adminDashboard" className={styles.menuItem}>
+              Dashboard
+            </Link>
+            <Link to="/request-users" className={styles.menuItem}>
+              Request Users
+            </Link>
+            <Link to="/adviserslist" className={styles.menuItem}>
+              Adviserslist
+            </Link>
+            <Link to="/noticeboard" className={styles.menuItem}>
+              Notice Board
+            </Link>
+            <Link to="/resourcefile" className={styles.menuItem}>
+              Resource
+            </Link>
+            <Link to="/projectIdea" className={styles.menuItem}>
+              Open Idea
+            </Link>
+            <Link to="/result" className={styles.menuItem}>
+              Result
+            </Link>
+            <button onClick={handleLogout} className={styles.menuItem}>
+              Logout
+            </button>
           </>
         )}
 
         {/* Teacher Routes */}
         {role === "teacher" && (
           <>
-            <Link to="/teacherDashboard" className={styles.menuItem}>Dashboard</Link>
-            <Link to="/teacherslot" className={styles.menuItem}>My Adviser Slots</Link>
-            <Link to="/slotRequests" className={styles.menuItem}>Slot Requests</Link>
-
+            <Link to="/teacherDashboard" className={styles.menuItem}>
+              Dashboard
+            </Link>
+            <Link to="/teacherslot" className={styles.menuItem}>
+              My Slots
+            </Link>
+            <Link to="/slotRequests" className={styles.menuItem}>
+              Slot Requests
+            </Link>
+            <button onClick={handleLogout} className={styles.menuItem}>
+              Logout
+            </button>
           </>
         )}
 
-        <div className={styles.logoutContainer}>
+        {/* <div className={styles.logoutContainer}>
           <button onClick={handleLogout} className={styles.logoutButton}>
             Logout
           </button>
-        </div>
+        </div> */}
       </aside>
 
       {isOpen && <div className={styles.overlay} onClick={toggleSidebar}></div>}

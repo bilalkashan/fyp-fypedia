@@ -1,36 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from "../sidebar/sidebar";
 import Cards from '../card/cards';
 import styles from './adminDashboard.module.css';
-import Sidebar from "../sidebar/sidebar";
-import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
-  const navigate = useNavigate(); 
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (user && user.role) {
+      setRole(user.role);
+    }
+  }, []);
 
   const handleCardClick = (componentName) => {
     setActiveComponent(componentName);
-    if (componentName === "requestUsers") {
-      navigate('/request-users'); 
-    } else if (componentName === "announcements") {
-      navigate('/noticeboard'); 
+    switch (componentName) {
+      case "requestUsers":
+        navigate('/request-users');
+        break;
+      case "announcements":
+        navigate('/noticeboard');
+        break;
+      case "adviserList":
+        navigate('/adviserslist');
+        break;
+      case "result":
+        navigate('/result');
+        break;
+      case "addTeacher":
+        navigate('/addTeacher');
+        break;
+      case "/teacherDashboard":
+        navigate('/teacherDashboard');
+        break;
+      case "/teacherslot":
+        navigate('/teacherslot');
+        break;
+      case "/slotRequests":
+        navigate('/slotRequests');
+        break;
+      default:
+        break;
     }
-   else if (componentName === "adviserList") {
-    navigate('/adviserslist'); 
-  }
-  else if (componentName === "result") {
-    navigate('/result'); 
-  } else if (componentName === "addTeacher") {
-    navigate('/addTeacher'); 
-   
   };
-  }
+
   return (
     <div className={styles.adminDashboardContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
         <header className={styles.dashboardHeader}>
-          <h1>Admin Dashboard</h1>
+          <h1>{role === "teacher" ? "Teacher Dashboard" : "Admin Dashboard"}</h1>
           <nav>
             <a href="#home">Home</a> / <a href="#dashboard">Dashboard</a>
           </nav>
@@ -38,11 +61,17 @@ const AdminDashboard = () => {
 
         {activeComponent === "dashboard" && (
           <Cards
+            role={role}
+            // Admin handlers
             onCardClick={() => handleCardClick("requestUsers")}
             onCardClick1={() => handleCardClick("announcements")}
             onCardClick2={() => handleCardClick("adviserList")}
             onCardClick3={() => handleCardClick("result")}
             onCardClick4={() => handleCardClick("addTeacher")}
+            // Teacher handlers
+            onCardClick01={() => handleCardClick("/teacherDashboard")}
+            onCardClick02={() => handleCardClick("/teacherslot")}
+            onCardClick03={() => handleCardClick("/slotRequests")}
           />
         )}
       </main>
@@ -50,4 +79,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminDashboard;
