@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import AddAnnouncementModal from './AddAnnouncementModal';
 import styles from './Anouncments.module.css';
 import AnnouncementModal from './AnnouncementModel';
 import Sidebar from '../sidebar/sidebar';
+import api from '../../api';
 
 const Announcements = () => {
   const [announcements, setAnnouncements] = useState([]);
@@ -13,7 +13,7 @@ const Announcements = () => {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/auth/fetchAnnouncements');
+        const response = await api.get('http://localhost:8080/auth/fetchAnnouncements');
         setAnnouncements(response.data.announcements);
       } catch (error) {
         console.error('Error fetching announcements:', error);
@@ -25,7 +25,7 @@ const Announcements = () => {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`http://localhost:8080/auth/deleteAnnouncement/${_id}`);
+      await api.delete(`http://localhost:8080/auth/deleteAnnouncement/${_id}`);
       setAnnouncements((prevAnnouncements) =>
         prevAnnouncements.filter((announcement) => announcement._id !== _id)
       );

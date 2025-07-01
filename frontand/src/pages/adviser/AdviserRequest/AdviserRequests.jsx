@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "./AdviserRequests.module.css";
 import { handleSuccess, handleError } from "../../../toast";
 import Taskbar from "../../taskbar/taskbar";
 import Futtor from "../../futtor/futtor";
+import api from "../../../api";
 
 const AdviserRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -21,7 +21,7 @@ const AdviserRequests = () => {
     try {
       const user = JSON.parse(localStorage.getItem("loggedInUser"));
       console.log("Fetching requests for user:", user.email);
-      const res = await axios.get(`http://localhost:8080/auth/getStudentRequests/${user.email}`);
+      const res = await api.get(`/getStudentRequests/${user.email}`);
       setRequests(res.data.requests || []);
     } catch (err) {
       console.error("Error fetching requests:", err);
@@ -30,7 +30,7 @@ const AdviserRequests = () => {
 
   const fetchAdvisers = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/auth/getAllAdvisers");
+      const res = await api.get("/getAllAdvisers");
       const withOpenSlots = res.data.filter(a =>
         a.slots.some(s => s.status === "open")
       );
@@ -50,7 +50,7 @@ const AdviserRequests = () => {
     }
 
     try {
-      await axios.post("http://localhost:8080/auth/sendAdviserRequest", {
+      await api.post("/sendAdviserRequest", {
         adviserId: adviser._id,
         adviserName: adviser.name,
         slotName: openSlot.slotName,

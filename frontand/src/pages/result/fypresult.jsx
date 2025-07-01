@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "./fypresult.module.css";
 import Taskbar from "../taskbar/taskbar";
 import Futtor from "../futtor/futtor";
+import api from "../../api";
 
 const fypResultDepartment = [
   {
@@ -31,7 +31,7 @@ const FYPResult = () => {
 
   const fetchResults = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/auth/fetchresults");
+      const response = await api.get("/fetchresults");
       if (Array.isArray(response.data.results)) {
         setResults(response.data.results);
       } else {

@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from "./resourceFile.module.css";
-import axios from 'axios';
+import api from '../../api';
 
 const ResourceFileCard = ({ file }) => {
 
   const handleDownload = async (file) => {
   try {
-    const response = await axios.get(`http://localhost:8080/auth/downloadResourceFile/${file._id}`, {
+    const response = await api.get(`/downloadResourceFile/${file._id}`, {
       responseType: "blob",
     });
 

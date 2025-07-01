@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './card';
 import styles from './card.module.css';
+import api from '../../api';
 
 const Cards = ({
   onCardClick, onCardClick1, onCardClick2, onCardClick3, onCardClick4,
@@ -10,19 +11,22 @@ const Cards = ({
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    if (role === 'admin') {
-      fetch('http://localhost:8080/auth/getAdminPendingUsers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({})
+  if (role === 'admin') {
+    api.post('/getAdminPendingUsers')
+      .then(res => {
+        if (res.data && Array.isArray(res.data.users)) {
+          setUsers(res.data.users);
+        } else {
+          setUsers([]);
+        }
       })
-        .then(response => response.json())
-        .then(data => setUsers(data.users))
-        .catch(error => console.error("Error fetching users:", error));
-    }
-  }, [role]);
+      .catch(err => {
+        console.error("Error fetching users:", err);
+        setUsers([]);
+      });
+  }
+}, [role]);
+
 
   return (
     <div className={styles.cardsWrapper}>
@@ -30,7 +34,7 @@ const Cards = ({
         {role === 'admin' && (
           <>
             <Card
-              value={users.length}
+            value={Array.isArray(users) ? users.length : 0}
               title="User Request"
               description="More info"
               cardClass={styles.cardPrimaryContainer}

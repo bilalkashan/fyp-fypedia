@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "./projectIdea.module.css";
 import Sidebar from "../sidebar/sidebar";
 import AddProejectIdea from "./addProjectIdea";
+import api from "../../api";
 
 const ProjectIdea = () => {
   const [openIdeas, setOpenIdeas] = useState([]);
@@ -11,7 +11,7 @@ const ProjectIdea = () => {
 
   const fetchProjectIdea = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/auth/fetchProjectIdea");
+      const response = await api.get("/fetchProjectIdea");
       if (Array.isArray(response.data.openIdeas)) {
         setOpenIdeas(response.data.openIdeas);
       } else {
@@ -33,7 +33,7 @@ const ProjectIdea = () => {
       message: "Are you sure you want to delete this project idea?",
       onConfirm: async () => {
         try {
-          await axios.delete(`http://localhost:8080/auth/deleteProjectIdea?id=${projectId}`);
+          await api.delete(`/deleteProjectIdea?id=${projectId}`);
           fetchProjectIdea();
           setConfirmation(null);
         } catch (error) {

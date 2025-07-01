@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styles from './AnnouncementModel.module.css';
 import { handleError, handleSuccess } from '../../toast';
+import api from '../../api';
 
 const AnnouncementModal = ({ announcement, onClose, onSave }) => {
   const [title, setTitle] = useState(announcement.title);
@@ -14,8 +14,8 @@ const AnnouncementModal = ({ announcement, onClose, onSave }) => {
 
     }
     try {
-      const response = await axios.put(
-        `http://localhost:8080/auth/updateAnnouncement/${announcement._id}`,
+      const response = await api.put(
+        `/updateAnnouncement/${announcement._id}`,
         { title, description }
       );
       onSave(response.data.announcement); 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "./addResult.module.css";
 import { handleError, handleSuccess } from "../toast";
+import api from "../api";
 
 const AddResult = ({ onClose, onResultAdded }) => {
   const [formData, setFormData] = useState({
@@ -24,8 +24,8 @@ const AddResult = ({ onClose, onResultAdded }) => {
 
       setLoadingGroupInfo(true);
       try {
-        const res = await axios.get(
-          `http://localhost:8080/auth/get-group-info/${groupNameTrimmed}`
+        const res = await api.get(
+          `/get-group-info/${groupNameTrimmed}`
         );
         if (res.data.success) {
           const {
@@ -153,7 +153,7 @@ const AddResult = ({ onClose, onResultAdded }) => {
     ];
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/addResults", {
+      const response = await api.post("/addResults", {
         groupName: formData.groupName.trim(),
         registrationNumbers,
         projectTitle: formData.projectTitle.trim(),

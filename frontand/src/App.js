@@ -7,7 +7,6 @@ import RefreshHandler from './RefreshHandler';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './admin/admindashboard/adminDashboard';
-import TeacherDashboard from './teacher/teacherDashboard';
 import About from './pages/about/about';
 import AdviserSlots from './admin/adviser/adviserSlots';
 import AdviserAvailiblity from './pages/adviser/AdviserAvailiblity';

@@ -1,9 +1,9 @@
 // Result.js (React Component)
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "./result.module.css";
 import Sidebar from "../admin/sidebar/sidebar";
 import AddResult from "./addResult";
+import api from "../api";
 
 const fypResultDepartment = [
   { name: "FYP I", icon: "💻" },
@@ -23,7 +23,7 @@ const Result = () => {
 
   const fetchResults = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/auth/fetchresults");
+      const response = await api.get("/fetchresults");
       if (Array.isArray(response.data.results)) {
         setResults(response.data.results);
       } else {
@@ -44,7 +44,7 @@ const Result = () => {
       message: "Are you sure you want to delete this result?",
       onConfirm: async () => {
         try {
-          await axios.delete(`http://localhost:8080/auth/deleteresult?id=${resultId}`);
+          await api.delete(`/deleteresult?id=${resultId}`);
           fetchResults();
           setConfirmation(null);
         } catch (error) {

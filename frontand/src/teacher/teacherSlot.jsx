@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "../admin/adviser/AdviserSlots.module.css";
 import Sidebar from "../admin/sidebar/sidebar";
 import ConfirmationModal from "../admin/adviser/ConfirmationModal";
 import { handleError } from "../toast";
+import api from "../api";
 
 const TeacherSlots = () => {
   const [advisers, setAdvisers] = useState([]);
@@ -17,7 +17,7 @@ const TeacherSlots = () => {
   const fetchAdvisers = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("loggedInUser"));  
-      const response = await axios.get(`http://localhost:8080/auth/getAllAdvisers`, {
+      const response = await api.get(`/getAllAdvisers`, {
         headers: {
           role: user.role,
           email: user.email, 
@@ -57,7 +57,7 @@ const TeacherSlots = () => {
         }
       }
 
-      const response = await axios.put(`http://localhost:8080/auth/update-slot/${adviserId}/${slotIndex}`, {
+      const response = await api.put(`/update-slot/${adviserId}/${slotIndex}`, {
         status: newStatus,
         reg1,
         reg2,

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Taskbar from "../taskbar/taskbar";
 import Futtor from "../futtor/futtor";
 import styles from "./AdviserAvalibility.module.css"; 
+import api from "../../api";
 
 const AdviserAvailability = () => {
   const [advisers, setAdvisers] = useState([]);
@@ -13,7 +13,7 @@ const AdviserAvailability = () => {
 
   const fetchAdvisers = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/auth/getAllAdvisers");
+      const response = await api.get("/getAllAdvisers");
       setAdvisers(response.data);
     } catch (error) {
       console.error("Error fetching advisers:", error);

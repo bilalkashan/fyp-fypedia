@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
 import styles from "./fyplist.module.css";
 import Futtor from "../futtor/futtor";
 import Taskbar from "../taskbar/taskbar";
 import { FaFilePdf, FaVideo, FaLink } from "react-icons/fa";
+import api from "../../api";
 
 function FypList() {
   const location = useLocation();
@@ -23,7 +23,7 @@ const handleSearch = (e) => {
   useEffect(() => {
     const fetchFyps = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/auth/fyp/filter`, {
+        const res = await api.get(`/fyp/filter`, {
           params: {
             department: department?.split(" ")[0].toLowerCase(),
             year,

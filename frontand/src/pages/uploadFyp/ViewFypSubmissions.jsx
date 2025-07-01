@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import UploadFypModal from "./UploadFypModal";
 import styles from "./ViewFypSubmissions.module.css";
 import Taskbar from "../taskbar/taskbar";
 import Futtor from "../futtor/futtor";
 import { FaFilePdf, FaVideo, FaLink } from "react-icons/fa";
+import api from "../../api";
 
 const ViewFypSubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -21,7 +21,7 @@ const ViewFypSubmissions = () => {
           return;
         }
 
-        const res = await axios.get(`http://localhost:8080/auth/fyp/get-student-fyp/${user._id}`);
+        const res = await api.get(`/fyp/get-student-fyp/${user._id}`);
         console.log("Response from server:", res.data);
         if (res.data.success) {
           setSubmissions(res.data.data || []);

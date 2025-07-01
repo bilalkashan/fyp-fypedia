@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import axios from 'axios';
 import { handleError, handleSuccess } from '../../toast';
 import styles from '../../pages/signup/signup.module.css'; 
 import Sidebar from '../sidebar/sidebar';
 import style from './addTeacher.module.css'; 
+import api from '../../api';
 
 function Signup() {
     const [signupInfo, setSignupInfo] = useState({
@@ -46,7 +46,7 @@ function Signup() {
         }
 
         try {
-            const { data } = await axios.post('http://localhost:8080/auth/signup', {
+            const { data } = await api.post('/signup', {
                 name,
                 email,
                 password,

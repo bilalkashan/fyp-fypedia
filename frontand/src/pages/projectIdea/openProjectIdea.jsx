@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "./openProjectIdea.module.css";
 import Taskbar from "../taskbar/taskbar";
 import Futtor from "../futtor/futtor";
+import api from "../../api";
 
 const OPenProjectIdea = () => {
   const [projectIdeas, setProjectIdeas] = useState([]);
 
   const fetchProjectIdea = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/auth/fetchProjectIdea");
+      const response = await api.get("/fetchProjectIdea");
       if (Array.isArray(response.data.openIdeas)) {
         setProjectIdeas(response.data.openIdeas);
       } else {

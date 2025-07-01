@@ -3,6 +3,7 @@ const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
 const StudentDetail = require("../Models/studentDetail");
 const TeacherDetail = require("../Models/teacherDetail");
+const sendEmail = require("../utils/sendEmail");
 
 const signup = async (req, res) => {
     try {
@@ -43,7 +44,9 @@ const signup = async (req, res) => {
             return res.status(409).json({ message: "User already exists", success: false });
         }
 
-        const newUser = new UserModel({
+       const otp = Math.floor(100000 + Math.random() * 900000);
+
+            const newUser = new UserModel({
             name,
             email,
             password: await bcrypt.hash(password, 10),
@@ -51,10 +54,17 @@ const signup = async (req, res) => {
             is_active: true,
             is_verified: false,
             admin_verified: "false",
-            otp: Math.floor(Math.random() * 1000000) + 1
-        });
+            otp
+            });
 
-        await newUser.save();
+            await newUser.save();
+
+            // Send OTP via email
+            await sendEmail(email, "FYPedia - Email Verification OTP", 
+                `Your OTP code is: ${otp} 
+            Please use this code to verify your email address. Do not share this code with anyone. 
+            If you did not request this, please ignore this email.`);
+
 
         if (newUser.role === "student" && studentDepartment && regNumber && year && batch) {
             await StudentDetail.deleteOne({ registrationNumber: regNumber });
@@ -187,6 +197,10 @@ const forgetPassword = async (req, res) => {
             user.otp =Math.floor((Math.random()*1000000)+1);
             
             await user.save();
+            await sendEmail(email, "FYPedia - Email Verification OTP", 
+                `Your OTP code is: ${user.otp} 
+            Please use this code to verify your email address. Do not share this code with anyone. 
+            If you did not request this, please ignore this email.`);
         }
         if (!user) {
             return res.status(409).json({ message: "Auth failed: email is wrong", success: false });

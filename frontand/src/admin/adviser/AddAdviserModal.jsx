@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import styles from "./AddAdviserModal.module.css";
 import { handleError, handleSuccess } from "../../toast";
+import api from "../../api";
 
 const AddAdviserModal = ({ onClose, onAdviserAdded }) => {
     const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ const AddAdviserModal = ({ onClose, onAdviserAdded }) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post(`http://localhost:8080/auth/addAdviser`, formData);
+            const response = await api.post(`/addAdviser`, formData);
 
             const { success, message, adviser } = response.data;
 

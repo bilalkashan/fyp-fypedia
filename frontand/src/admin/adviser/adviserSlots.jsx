@@ -5,6 +5,7 @@ import Sidebar from "../sidebar/sidebar";
 import AddAdviserModal from "./AddAdviserModal";
 import ConfirmationModal from "./ConfirmationModal";
 import { handleError } from "../../toast";
+import api from "../../api";
 
 const AdviserSlots = () => {
     const [advisers, setAdvisers] = useState([]);
@@ -17,7 +18,7 @@ const AdviserSlots = () => {
 
     const fetchAdvisers = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/auth/getAllAdvisers`);
+            const response = await api.get(`/getAllAdvisers`);
             setAdvisers(response.data);
         } catch (error) {
             console.error("Error fetching advisers:", error);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styles from './AnnouncementModel.module.css';
 import { handleError, handleSuccess } from '../../toast';
+import api from '../../api';
 
 const AddResourceFileModal = ({ onClose, onSave }) => {
   const [fileName, setFileName] = useState('');
@@ -22,8 +22,8 @@ const AddResourceFileModal = ({ onClose, onSave }) => {
   formData.append("file", file);
 
   try {
-    const response = await axios.post(
-      "http://localhost:8080/auth/addResourceFile",
+    const response = await api.post(
+      "/addResourceFile",
       formData,
       {
         headers: {

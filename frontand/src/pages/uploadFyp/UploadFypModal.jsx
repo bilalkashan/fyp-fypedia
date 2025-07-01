@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UploadFypModal.module.css";
 import { handleSuccess, handleError } from "../../toast";
-import axios from "axios";
+import api from "../../api";
 
 const UploadFypModal = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const UploadFypModal = ({ onClose }) => {
       data.append("video", formData.video);
       data.append("studentId", user._id);
 
-      await axios.post("http://localhost:8080/auth/fyp/submit-fyp", data, {
+      await api.post("/fyp/submit-fyp", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

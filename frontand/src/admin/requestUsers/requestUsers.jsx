@@ -2,58 +2,46 @@ import React, { useEffect, useState } from 'react';
 import styles from './requestUsers.module.css';
 import { handleSuccess } from '../../toast';
 import Sidebar from '../sidebar/sidebar';
+import api from '../../api';
 
 const RequestUsers = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/auth/getAdminPendingUsers', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({})
-    })
-      .then(response => response.json())
-      .then(data => setUsers(data.users))
-      .catch(error => console.error("Error fetching users:", error));
+    api.post('/getAdminPendingUsers')  // no need to pass empty object unless API expects it
+      .then(res => {
+        if (res.data && Array.isArray(res.data.users)) {
+          setUsers(res.data.users);
+        } else {
+          setUsers([]);
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching users:", err);
+        setUsers([]);
+      });
   }, []);
 
   const handleAccept = (userId) => {
-    fetch(`http://localhost:8080/auth/acceptUser`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userId })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          setUsers(users.filter(user => user._id !== userId));
+    api.post('/acceptUser', { userId })
+      .then(res => {
+        if (res.data.success) {
+          setUsers(prev => prev.filter(user => user._id !== userId));
           handleSuccess("User accepted successfully!");
         }
       })
-      .catch(error => console.error("Error accepting user:", error));
+      .catch(err => console.error("Error accepting user:", err));
   };
 
-  // Function to handle user removal
   const handleRemove = (userId) => {
-    fetch(`http://localhost:8080/auth/deleteUserRequest`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userId })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          setUsers(users.filter(user => user._id !== userId));
+    api.post('/deleteUserRequest', { userId })
+      .then(res => {
+        if (res.data.success) {
+          setUsers(prev => prev.filter(user => user._id !== userId));
           handleSuccess("User has been deleted successfully");
         }
       })
-      .catch(error => console.error("Error removing user:", error));
+      .catch(err => console.error("Error removing user:", err));
   };
 
   return (
@@ -80,20 +68,19 @@ const RequestUsers = () => {
               <tbody>
                 {users.map((user) => (
                   <tr key={user._id}>
-                    
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.is_verified ? "Verified" : "Not Verified"}</td>
                     <td>{user.role}</td>
                     <td>
-                      <button 
-                        className={styles.acceptButton} 
+                      <button
+                        className={styles.acceptButton}
                         onClick={() => handleAccept(user._id)}
                       >
                         Accept
                       </button>
-                      <button 
-                        className={styles.removeButton} 
+                      <button
+                        className={styles.removeButton}
                         onClick={() => handleRemove(user._id)}
                       >
                         Remove

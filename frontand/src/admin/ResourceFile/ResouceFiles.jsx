@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import AddResourceFileModal from './AddResourceFileModal';
 import ResourceFileModel from './ResourceFileModel';
 import Sidebar from '../sidebar/sidebar';
 import styles from './ResourceFiles.module.css'; 
+import api from '../../api';
 
 const ResourceFiles = () => {
   const [resourceFiles, setResourceFiles] = useState([]);
@@ -13,7 +13,7 @@ const ResourceFiles = () => {
   useEffect(() => {
     const fetchResourceFiles = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/auth/fetchResourceFiles');
+        const response = await api.get('/fetchResourceFiles');
         setResourceFiles(response.data.resourceFiles);
       } catch (error) {
         console.error('Error fetching resource files:', error);
@@ -25,7 +25,7 @@ const ResourceFiles = () => {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`http://localhost:8080/auth/deleteResourceFile/${_id}`);
+      await api.delete(`/deleteResourceFile/${_id}`);
       setResourceFiles((prevFiles) =>
         prevFiles.filter((file) => file._id !== _id)
       );

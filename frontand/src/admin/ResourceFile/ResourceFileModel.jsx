@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styles from './AnnouncementModel.module.css'; // Rename this CSS file if it's shared
 import { handleError, handleSuccess } from '../../toast';
+import api from '../../api';
 
 const ResourceFileModel = ({ resourceFile, onClose, onSave }) => {
   const [fileName, setFileName] = useState(resourceFile.fileName || '');
@@ -26,8 +26,8 @@ const ResourceFileModel = ({ resourceFile, onClose, onSave }) => {
 
     setLoading(true);
     try {
-      const response = await axios.put(
-        `http://localhost:8080/auth/updateResourceFile/${resourceFile._id}`,
+      const response = await api.put(
+        `/updateResourceFile/${resourceFile._id}`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },

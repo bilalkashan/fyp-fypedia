@@ -3,7 +3,7 @@ import styles from "./resourceFile.module.css";
 import Taskbar from "../taskbar/taskbar";
 import ResourceFileCard from "./resourceFileCard";
 import Futtor from "../futtor/futtor";
-import axios from "axios";
+import api from "../../api";
 
 const ResourceFile = () => {
   const [files, setResourceFiles] = useState([]);
@@ -11,8 +11,8 @@ const ResourceFile = () => {
   useEffect(() => {
     const fetchResourceFiles = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/auth/fetchResourceFiles"
+        const response = await api.get(
+          "/fetchResourceFiles"
         );
         setResourceFiles(response.data.resourceFiles);
       } catch (error) {

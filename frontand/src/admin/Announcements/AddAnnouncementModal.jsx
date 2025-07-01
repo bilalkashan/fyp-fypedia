@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styles from './AnnouncementModel.module.css';
 import { handleError, handleSuccess } from '../../toast';
+import api from '../../api';
 
 const AddAnnouncementModal = ({ onClose, onSave }) => {
   const [title, setTitle] = useState('');
@@ -14,7 +14,7 @@ const AddAnnouncementModal = ({ onClose, onSave }) => {
       return; 
     }
     try {
-      const response = await axios.post('http://localhost:8080/auth/addAnouncements', {
+      const response = await api.post('/addAnouncements', {
         title,
         description,
       });

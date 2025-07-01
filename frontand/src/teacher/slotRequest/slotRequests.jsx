@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "./slotRequests.module.css";
 import Sidebar from "../../admin/sidebar/sidebar";
 import { handleError, handleSuccess } from "../../toast";
+import api from "../../api";
 
 const SlotRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -21,8 +21,8 @@ const SlotRequests = () => {
           return;
         }
 
-        const res = await axios.get(
-          `http://localhost:8080/auth/getAdviserRequestsForTeacher/${adviseremail}`
+        const res = await api.get(
+          `/getAdviserRequestsForTeacher/${adviseremail}`
         );
         setRequests(res.data.requests || []);
       } catch (err) {
@@ -36,7 +36,7 @@ const SlotRequests = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:8080/auth/updateRequestStatus/${id}`, {
+      await api.put(`/updateRequestStatus/${id}`, {
         status: newStatus,
       });
       setRequests((prev) =>
@@ -61,7 +61,7 @@ const SlotRequests = () => {
     if (!feedbackText.trim()) return;
 
     try {
-      await axios.put(`http://localhost:8080/auth/updateRequestFeedback/${currentFeedbackId}`, {
+      await api.put(`/updateRequestFeedback/${currentFeedbackId}`, {
         feedback: feedbackText.trim(),
       });
       setRequests((prev) =>
