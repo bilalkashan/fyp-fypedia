@@ -60,10 +60,22 @@ const signup = async (req, res) => {
             await newUser.save();
 
             // Send OTP via email
-            await sendEmail(email, "FYPedia - Email Verification OTP", 
-                `Your OTP code is: ${otp} 
-            Please use this code to verify your email address. Do not share this code with anyone. 
-            If you did not request this, please ignore this email.`);
+             await sendEmail(
+            email,
+            "FYPedia - Email Verification OTP",
+            `Hello ${name || "User"},
+
+            Your One-Time Password (OTP) for email verification is: ${otp}
+
+            Please enter this code in the FYPedia application to verify your email address.
+
+            ⚠️ Do not share this code with anyone. It is valid for a limited time.
+
+            If you did not request this, please ignore this email.
+
+            Thank you,  
+            FYPedia Team`
+            );
 
 
         if (newUser.role === "student" && studentDepartment && regNumber && year && batch) {
@@ -197,10 +209,25 @@ const forgetPassword = async (req, res) => {
             user.otp =Math.floor((Math.random()*1000000)+1);
             
             await user.save();
-            await sendEmail(email, "FYPedia - Email Verification OTP", 
-                `Your OTP code is: ${user.otp} 
-            Please use this code to verify your email address. Do not share this code with anyone. 
-            If you did not request this, please ignore this email.`);
+            await sendEmail(
+            email,
+            "FYPedia - Password Reset OTP",
+            `Hello ${user.name || "User"},
+
+            We received a request to reset your password.
+
+            🔐 Your One-Time Password (OTP) is: ${user.otp}
+
+            Please enter this OTP in the app to proceed with resetting your password.
+
+            ⚠️ Do not share this code with anyone. It will expire shortly.
+
+            If you did not request this, please ignore this email.
+
+            Regards,  
+            FYPedia Support Team`
+            );
+
         }
         if (!user) {
             return res.status(409).json({ message: "Auth failed: email is wrong", success: false });
@@ -282,6 +309,12 @@ const acceptUser = async (req, res) => {
       if (user) {
         user.admin_verified = "true";
         await user.save();
+        await sendEmail(
+        user.email,
+        "FYPEDIA Account Approved 🎉",
+        `Dear ${user.name || 'User'},\n\nYour account has been approved. You can now log in and use FYPEDIA.\n\nBest regards,\nFYPEDIA Team`
+        );
+        console.log("User accepted:", user.email);
   
         res.status(200).json({ message: "User accepted successfully", success: true });
       } else {
