@@ -79,7 +79,6 @@ const getStudentFyp = async (req, res) => {
       ]
     }).populate("studentId", "name email");
 
-    // Step 3: Attach adviser info for each submission
     const submissionsWithAdviser = await Promise.all(
       submissions.map(async (submission) => {
         const adviser = await Adviser.findOne({
@@ -108,7 +107,6 @@ const getStudentFyp = async (req, res) => {
       })
     );
 
-    // Step 4: Return to frontend
     res.status(200).json({
       success: true,
       data: submissionsWithAdviser
@@ -168,9 +166,75 @@ const getFilteredFyps = async (req, res) => {
   }
 };
 
+const getUnverifiedFyps = async (req, res) => {
+  try {
+    const adviser = await Adviser.findOne({ userId: req._id }); 
+    console.log("Adviser found:", adviser.name);
+
+    if (!adviser) {
+      return res.status(404).json({ success: false, message: "Adviser not found" });
+    }
+
+    const regNumbers = adviser.slots
+      .filter(slot => slot.status === "reserved" && slot.reservedBy)
+      .flatMap(slot => [slot.reservedBy.reg1, slot.reservedBy.reg2])
+      .filter(Boolean);
+
+    const fyps = await FypSubmission.find({
+      isVerified: false,
+      groupMembers: { $in: regNumbers }
+    });
+
+    res.status(200).json({ success: true, data: fyps });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+const verifyFyp = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const submission = await FypSubmission.findById(id);
+
+    if (!submission) {
+      return res.status(404).json({ success: false, message: "FYP not found" });
+    }
+
+    submission.isVerified = true;
+    await submission.save();
+
+    res.status(200).json({ success: true, message: "FYP verified successfully" });
+  } catch (error) {
+    console.error("Error verifying FYP:", error);
+    res.status(500).json({ success: false, message: "Verification failed" });
+  }
+};
+
+const deleteFyp = async (req, res) => {
+  try {
+    const { id } = req.params;  // ✅ fix here
+    console.log("Deleting FYP submission with ID:", id);
+
+    const submission = await FypSubmission.findById(id);
+    if (!submission) {
+      return res.status(404).json({ success: false, message: "FYP submission not found" });
+    }
+
+    await submission.deleteOne();
+
+    res.status(200).json({ success: true, message: "FYP submission deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting FYP submission:", error);
+    res.status(500).json({ success: false, message: "Failed to delete FYP submission" });
+  }
+};
+
+
+
 
 
 
 module.exports = {
-  getAllFypSubmissions,getStudentFyp,getFilteredFyps
+  getAllFypSubmissions,getStudentFyp,getFilteredFyps,deleteFyp,getUnverifiedFyps,verifyFyp
 };

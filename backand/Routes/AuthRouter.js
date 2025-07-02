@@ -3,11 +3,11 @@ const { signupValidation, loginValidation } = require('../Middleware/AuthValidat
 const { signup, login, verify, forgetPassword, resetPassword, getAdminPendingUsers, acceptUser, deleteUserRequest } = require('../Controllers/AuthController');
 const { addAdviser, updateSlots, getAllAdvisers, deleteAdviser, sendAdviserRequest, getAdviserRequestsForTeacher, getStudentRequests, updateRequestStatus, updateRequestFeedback } = require('../Controllers/AdviserController');
 const { addAnnouncements, fetchAnnouncements, updateAnnouncement, deleteAnnouncement } = require('../Controllers/NoticeBoard');
-const { addResults, fetchresults, deleteresult, getGroupInfo, addGroup } = require('../Controllers/ResultController');
+const { addResults, fetchresults, deleteresult, getGroupInfo, addGroup, addGroupsBulk } = require('../Controllers/ResultController');
 const { addProjectIdea, fetchProjectIdea, deleteProjectIdea } = require('../Controllers/OpenIdeaController');
 const { fetchResourceFiles, deleteResourceFile, updateResourceFile, addResourceFile, downloadResourceFile } = require('../Controllers/ResourceFileController');
 const upload = require('../Middleware/multer');
-const { getAllFypSubmissions, getStudentFyp, getFilteredFyps } = require('../Controllers/UploadFypController');
+const { getAllFypSubmissions, getStudentFyp, getFilteredFyps, deleteFyp, getUnverifiedFyps, verifyFyp } = require('../Controllers/UploadFypController');
 const fypRoutes = require('./fyproutes/fypRoutes.js');
 const verifyToken = require('../Middleware/verifyToken.js');
 
@@ -48,6 +48,7 @@ router.get('/fetchresults', verifyToken, fetchresults);
 router.delete('/deleteresult', verifyToken, deleteresult); 
 router.get('/get-group-info/:groupName', verifyToken, getGroupInfo);
 router.post('/add-group', verifyToken, addGroup);
+router.post('/addGroupsBulk',  addGroupsBulk)
 
 // Open Project Idea Routes
 router.post('/addProjectIdea', verifyToken, addProjectIdea);
@@ -67,5 +68,8 @@ router.use('/fyp', verifyToken, fypRoutes); // protect all nested /fyp routes
 router.get('/fyp/get-student-fyp/:studentIdOrReg', verifyToken, getStudentFyp);
 router.get('/fyp/get-all', verifyToken, getAllFypSubmissions);
 router.get('/fyp/filter', verifyToken, getFilteredFyps);
+router.delete('/fyp/delete/:id', verifyToken, deleteFyp);
+router.get("/fyp/unverified-for-adviser",verifyToken,getUnverifiedFyps);    
+router.put("/fyp/verify/:id", verifyToken, verifyFyp);
 
 module.exports = router;

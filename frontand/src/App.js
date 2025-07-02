@@ -30,6 +30,7 @@ import OPenProjectIdea from './pages/projectIdea/openProjectIdea';
 import ResourceFiles from './admin/ResourceFile/ResouceFiles';
 import ResourceFile from './pages/resourceFile/resourceFiles';
 import ViewFypSubmissions from './pages/uploadFyp/ViewFypSubmissions';
+import UnverifiedFyps from './teacher/unverifiedFyp/UnverifiedFyps';
 
 function App() {
 
@@ -73,7 +74,8 @@ function App() {
         {/* Teacher Routes */}
         <Route path="/teacherDashboard" element={<ProtectedRoute element={<AdminDashboard allowedRole="teacher" />} />} />
         <Route path="/teacherslot" element={<ProtectedRoute element={<TeacherSlots />} allowedRole="teacher" />} />
-        <Route path="/slotRequests" element={<ProtectedRoute element={<SlotRequests />} allowedRole="teacher" />} />=
+        <Route path="/slotRequests" element={<ProtectedRoute element={<SlotRequests />} allowedRole="teacher" />} />
+        <Route path="/fypSubmission" element={<ProtectedRoute element={<UnverifiedFyps />} allowedRole="teacher" />} />
         <Route path="/resourceFile" element={<ProtectedRoute element={<ResourceFiles />} allowedRole="admin" />} />
       </Routes>
     </div>

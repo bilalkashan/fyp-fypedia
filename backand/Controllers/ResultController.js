@@ -215,6 +215,58 @@ const getGroupInfo = async (req, res) => {
   }
 };
 
+const addGroupsBulk = async (req, res) => {
+  const groups = req.body; // Expecting an array of group objects
+
+  // Validate input is an array
+  if (!Array.isArray(groups) || groups.length === 0) {
+    return res.status(400).json({ success: false, message: "Provide a non-empty array of groups." });
+  }
+
+  // Validate each group object
+  for (const group of groups) {
+    const { groupName, registrationNumbers, projectTitle } = group;
+    if (
+      !groupName ||
+      !registrationNumbers ||
+      !Array.isArray(registrationNumbers) ||
+      registrationNumbers.length !== 2 ||
+      !projectTitle
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Each group must have groupName, exactly two registration numbers, and projectTitle.",
+        invalidGroup: group,
+      });
+    }
+  }
+
+  try {
+    // Check if any groupName already exists in DB to avoid duplicates
+    const groupNames = groups.map(g => g.groupName);
+    const existingGroups = await GroupMapping.find({ groupName: { $in: groupNames } }).select('groupName');
+
+    if (existingGroups.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: "Some groupNames already exist in database.",
+        existingGroupNames: existingGroups.map(g => g.groupName),
+      });
+    }
+
+    // Insert all groups in bulk
+    const insertedGroups = await GroupMapping.insertMany(groups);
+
+    return res.status(201).json({
+      success: true,
+      message: "Groups created successfully",
+      groups: insertedGroups,
+    });
+  } catch (err) {
+    console.error("Bulk add groups error:", err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 
 
@@ -225,5 +277,5 @@ module.exports = {
   updateresult,
   deleteresult,
   getGroupInfo,
-  addGroup
+  addGroup,addGroupsBulk
 };

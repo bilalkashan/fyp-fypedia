@@ -85,6 +85,9 @@ const Sidebar = () => {
             <Link to="/slotRequests" className={styles.menuItem}>
               Slot Requests
             </Link>
+            <Link to="/fypSubmission" className={styles.menuItem}>
+              Fyp Submission
+            </Link>
             <button onClick={handleLogout} className={styles.menuItem}>
               Logout
             </button>

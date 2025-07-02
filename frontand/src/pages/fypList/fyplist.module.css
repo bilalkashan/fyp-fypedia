@@ -1,9 +1,14 @@
 .container {
-  padding: 80px;
+  padding: 40px 80px;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
-  
+  max-width: 900px;         /* Optional: limit width */
+  margin: 80px auto;        /* Center horizontally with margin on top */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+  border-radius: 8px;       /* Optional: rounded corners */
+  background-color: #fff;   /* Cleaner background */
 }
+
 
 .header {
   text-align: center;
@@ -53,7 +58,7 @@
 
 .detailButton {
   padding: 6px 12px;
-  background-color: #007bff;
+  background-color: #003366;
   color: white;
   border: none;
   border-radius: 4px;
@@ -128,10 +133,54 @@
 }
 
 .backButton:hover {
-  background-color: #2563eb;
+  background-color: #244b71;
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+.actionRow {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.deleteButton {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+  background-color: #c62828;
+}
+.actionButtonsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.verifyButton {
+  background-color: #003366;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.verifyButton:hover {
+  background-color: #244b71;
 }

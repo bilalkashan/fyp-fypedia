@@ -58,24 +58,24 @@ const signup = async (req, res) => {
             });
 
             await newUser.save();
-
+            console.log(otp)
             // Send OTP via email
-             await sendEmail(
-            email,
-            "FYPedia - Email Verification OTP",
-            `Hello ${name || "User"},
+            //  await sendEmail(
+            // email,
+            // "FYPedia - Email Verification OTP",
+            // `Hello ${name || "User"},
 
-            Your One-Time Password (OTP) for email verification is: ${otp}
+            // Your One-Time Password (OTP) for email verification is: ${otp}
 
-            Please enter this code in the FYPedia application to verify your email address.
+            // Please enter this code in the FYPedia application to verify your email address.
 
-            ⚠️ Do not share this code with anyone. It is valid for a limited time.
+            // ⚠️ Do not share this code with anyone. It is valid for a limited time.
 
-            If you did not request this, please ignore this email.
+            // If you did not request this, please ignore this email.
 
-            Thank you,  
-            FYPedia Team`
-            );
+            // Thank you,  
+            // FYPedia Team`
+            // );
 
 
         if (newUser.role === "student" && studentDepartment && regNumber && year && batch) {
@@ -141,7 +141,7 @@ const login = async (req, res) => {
         );
 
             res.status(200).json({
-            message: "Login successful",
+            message: user.role+" Login successful",
             user: {
                 _id: user._id,
                 name: user.name,

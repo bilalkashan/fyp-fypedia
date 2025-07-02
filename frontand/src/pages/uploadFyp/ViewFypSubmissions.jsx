@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import UploadFypModal from "./UploadFypModal";
-import styles from "./ViewFypSubmissions.module.css";
+import styles from "../fypList/fyplist.module.css";
 import Taskbar from "../taskbar/taskbar";
 import Futtor from "../futtor/futtor";
-import { FaFilePdf, FaVideo, FaLink } from "react-icons/fa";
+import { FaFilePdf, FaVideo, FaLink, FaTrash } from "react-icons/fa";
 import api from "../../api";
+import ConfirmationModal from "../../admin/adviser/ConfirmationModal";
 
 const ViewFypSubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null); // For confirmation modal
 
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        console.log("Fetching submissions...");
         const user = JSON.parse(localStorage.getItem("loggedInUser"));
         if (!user || !user._id) {
           console.error("User not found in localStorage");
@@ -22,10 +23,8 @@ const ViewFypSubmissions = () => {
         }
 
         const res = await api.get(`/fyp/get-student-fyp/${user._id}`);
-        console.log("Response from server:", res.data);
         if (res.data.success) {
           setSubmissions(res.data.data || []);
-          console.log("Submissions fetched successfully:", res.data.data);
         } else {
           console.error("Unexpected data format:", res.data);
         }
@@ -38,6 +37,20 @@ const ViewFypSubmissions = () => {
 
     fetchSubmissions();
   }, []);
+
+  const confirmDelete = async () => {
+    try {
+      await api.delete(`/fyp/delete/${deleteTarget._id}`);
+      setSubmissions((prev) => prev.filter((s) => s._id !== deleteTarget._id));
+      setDeleteTarget(null);
+    } catch (error) {
+      console.error("Failed to delete submission:", error);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteTarget(null);
+  };
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
 
@@ -62,11 +75,27 @@ const ViewFypSubmissions = () => {
         {submissions.length === 0 ? (
           <p className={styles.noData}>No submissions found.</p>
         ) : (
-          <div className={styles.submissionList}>
-            {submissions.map((submission) => (
-              <div key={submission._id} className={styles.card}>
-                <div className={styles.cardHeader}>
-                  <h3 className={styles.cardTitle}>{submission.title}</h3>
+          submissions.map((submission) => (
+            <div key={submission._id} className={styles.detailsCard}>
+              <h2 className={styles.detailTitle}>{submission.title}</h2>
+
+              <div className={styles.detailSection}>
+                <p><strong>Description:</strong> {submission.description}</p>
+                <p><strong>Group Members:</strong> {submission.groupMembers?.join(", ")}</p>
+                <p><strong>Adviser:</strong> {submission.adviser?.name || "N/A"}</p>
+                <p>
+                  <strong>Project Link:</strong>{" "}
+                  <a
+                    href={submission.projectLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.iconLink}
+                  >
+                    <FaLink className={styles.icon} /> View Project
+                  </a>
+                </p>
+                <p>
+                  <strong>Status:</strong>{" "}
                   <span
                     className={
                       submission.isVerified
@@ -76,37 +105,60 @@ const ViewFypSubmissions = () => {
                   >
                     {submission.isVerified ? "Verified" : "Not Verified"}
                   </span>
-                </div>
-                <p className={styles.cardText}>
-                  <strong>Description:</strong> {submission.description}
-                </p>
-                <p className={styles.cardText}>
-                  <strong>Group:</strong> {submission.groupMembers?.join(", ")}
-                  
-                </p>
-                <p className={styles.cardText}>
-                  <strong>Project Link:</strong>{" "}
-                  <a href={submission.projectLink} target="_blank" rel="noreferrer">
-                    <FaLink /> View Project
-                  </a>
-                </p>
-                <div className={styles.filesSection}>
-                  <a href={submission.srs} download target="_blank" rel="noreferrer">
-                    <FaFilePdf /> Download SRS
-                  </a>
-                  <a href={submission.sds} download target="_blank" rel="noreferrer">
-                    <FaFilePdf /> Download SDS
-                  </a>
-                  <a href={submission.video} target="_blank" rel="noreferrer">
-                    <FaVideo /> Watch Video
-                  </a>
-                </div>
-                <p className={styles.cardText}>
-                  <strong>Adviser:</strong> {submission.adviser?.name || "N/A"}
                 </p>
               </div>
-            ))}
-          </div>
+
+              <div className={styles.filesGrid}>
+                <a
+                  href={submission.srs}
+                  download
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.fileCard}
+                >
+                  <FaFilePdf className={styles.fileIcon} />
+                  <span>SRS</span>
+                </a>
+                <a
+                  href={submission.sds}
+                  download
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.fileCard}
+                >
+                  <FaFilePdf className={styles.fileIcon} />
+                  <span>SDS</span>
+                </a>
+                <a
+                  href={submission.video}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.fileCard}
+                >
+                  <FaVideo className={styles.fileIcon} />
+                  <span>Video</span>
+                </a>
+              </div>
+
+              <div className={styles.actionRow}>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => setDeleteTarget(submission)}
+                >
+                  <FaTrash /> Delete
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+
+        {deleteTarget && (
+          <ConfirmationModal
+            type="confirm"
+            message={`Are you sure you want to delete "${deleteTarget.title}"?`}
+            onConfirm={confirmDelete}
+            onCancel={cancelDelete}
+          />
         )}
       </div>
       <Futtor />
