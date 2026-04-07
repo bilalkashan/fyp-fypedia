@@ -9,7 +9,6 @@ const jwt = require("jsonwebtoken");
 
 const addAdviser = async (req, res) => {
     const { name, email, specialization } = req.body;
-
     try {
         if (!name || !email || !specialization) {
             return res.status(400).json({ message: "All fields are required", success: false });
@@ -55,13 +54,11 @@ const addAdviser = async (req, res) => {
     }
 };
 
-
 const updateSlots = async (req, res) => {
     try {
         const { adviserId, slotIndex } = req.params;
         const { status, reg1, reg2 } = req.body;
 
-        // If reserving a slot, validate registration numbers
         if (status === "reserved") {
             if (!reg1 || !reg2) {
                 return res.status(400).json({ success: false, message: "Both registration numbers are required." });
