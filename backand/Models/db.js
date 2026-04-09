@@ -5,7 +5,7 @@
 
     mongoose.connect(mongdb_url)
     .then(()=>{
-        console.log("connected")
+        console.log("Database Connected!!")
     }).catch((e)=>{
         console.log("mongo error", e)
     })

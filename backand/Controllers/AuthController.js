@@ -112,7 +112,6 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        
         const user = await UserModel.findOne({ email });
         if (!user) {
             return res.status(409).json({ message: "Auth failed: email or password wrong", success: false });
@@ -130,7 +129,6 @@ const login = async (req, res) => {
         if (user.admin_verified==="false" || user.admin_verified==="rejected") {
             return res.status(403).json({ message: "Admin not veriied", success: false });
         }
-
 
         const jwtToken = jwt.sign(
             { email: user.email, _id: user._id, role: user.role }, 
