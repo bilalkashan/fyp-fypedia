@@ -109,8 +109,6 @@ const signup = async (req, res) => {
     }
 };
 
-
-
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -253,6 +251,7 @@ const forgetPassword = async (req, res) => {
         res.status(500).json({ message: "Server error", success: false });
     }
 }
+
 const resetPassword = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -301,6 +300,7 @@ const getAdminPendingUsers = async (req, res) => {
         res.status(500).json({ message: "Server error", success: false });
     }
 };
+
 const acceptUser = async (req, res) => {
     try {
       const { userId } = req.body;
@@ -323,7 +323,8 @@ const acceptUser = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: "Server error", success: false });
     }
-  };
+};
+
 const deleteUserRequest = async (req, res) => {
     try {
       const { userId } = req.body;
@@ -340,10 +341,7 @@ const deleteUserRequest = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: "Server error", success: false });
     }
-  };
-  
-
-
+};
 
 module.exports={
     signup, login,verify,forgetPassword,resetPassword,getAdminPendingUsers,acceptUser,deleteUserRequest
